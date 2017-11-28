@@ -2,10 +2,14 @@
 
 const express = require('express');
 const morgan = require('morgan');
-
+const mongoose = require('mongoose');
 const blogPostsRouter = require('./blogPostsRouter');
 const app = express();
 
+mongoose.Promise = global.Promise;
+
+const {PORT, DATABASE_URL} = require('./config');
+const {Post} = require('./models');
 
 app.use(morgan('common'));
 
