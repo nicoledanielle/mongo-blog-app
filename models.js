@@ -5,20 +5,32 @@ const mongoose = require('mongoose');
 //this is our schema to represent a blog post
 const postSchema = mongoose.Schema({
   title: {type: String, required: true},
+  author: {
+    firstName: String,
+    lastName: String
+  },
   content: {type: String, required: true},
   publishDate: Date.now()
 });
 
+//virtuals
+postSchema.virtual('authorName').get(function() {
+  return `${this.author.firstName} ${this.author.lastName}`.trim();});
 
 //instance methods
 postSchema.methods.apiRepr = function () {
   
   return{
     title: this.title,
+    author: this.authorName,
     content: this.content,
     publishDate: this.publishDate
   };
 };
+
+const Post = mongoose.model('Post', postSchema);
+
+module.exports = {Post};
 
 
 // const uuid = require('uuid');
